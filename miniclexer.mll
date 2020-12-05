@@ -1,5 +1,3 @@
-
-
 {
 
   open String
@@ -31,7 +29,7 @@ let ident =
   alpha (alpha | digit | '_')*
 
 
-space = [' ' '\t' '\r']
+let space = [' ' '\t' '\r']
 rule scan_token = parse
 	| ['\n'] { new_line(); scan_token lexbuf }
 	| space+ as s {new_col(length s); scan_token lexbuf }
@@ -58,8 +56,8 @@ rule scan_token = parse
 	| "bool" as s {new_col(length s);BOOL}
 	| "true" as s {new_col(length s);CST_B(true)}
 	| "false" as s {new_col(length s);CST_B(false)}
-	| digit+ as n -> { new_col(length n); CST(int_of_string n)}
-	| ident as s -> {new_col(length s); IDENT(s)}
+	| digit+ as n  { new_col(length n); CST(int_of_string n)}
+	| ident as s {new_col(length s); IDENT(s)}
 	| _ as c
 	      { failwith
 		  (Printf.sprintf

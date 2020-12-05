@@ -11,7 +11,6 @@
 %token RETURN WHILE IF ELSE PUTCHAR 
 %token LPAR RPAR LACC RACC EGAL COMMA SEMI EOF
 
-
 %left PLUS
 %left FOIS
 %nonassoc LT
@@ -20,12 +19,9 @@
 
 
 
-%type <(string * Minic.typ) list> var_decl_list
 %type <string * Minic.typ> var_decl
 
-%type <Minic.fun_def list> fun_def_list
 %type <Minic.fun_def> fun_def
-
 
 %start <Minic.prog> prog
 
@@ -33,13 +29,8 @@
 %%
 
 prog: 
-| global=var_decl_list  funct=fun_def_list EOF {{globals= global; functions= funct}}
+| global=list(var_decl)  funct=list(fun_def) EOF {{globals= global; functions= funct}}
 ;
-
-
-var_decl_list:
-| v=var_decl {[v]}
-| l=var_decl_list  v=var_decl {l@[v]}
 
 
 var_decl: 
@@ -48,19 +39,13 @@ var_decl:
 ;
 
 
-fun_def_list:
-| f=fun_def {[f]}
-| l=fun_def_list f=fun_def { l@[f] }
-; 
-
-
 
 fun_def: 
-| INT f=IDENT LPAR p=separated_list(COMMA,params) RPAR LACC local=var_decl_list l=list(instr) RACC { {name= f; params= p; return= Int; locals= local; code= l} }
+| INT f=IDENT LPAR p=separated_list(COMMA,params) RPAR LACC local=list(var_decl) l=list(instr) RACC { {name= f; params= p; return= Int; locals= local; code= l} }
 
-| BOOL f=IDENT LPAR p=separated_list(COMMA,params) RPAR LACC local=var_decl_list l=list(instr) RACC { {name= f; params= p; return= Bool; locals= local; code= l} }
+| BOOL f=IDENT LPAR p=separated_list(COMMA,params) RPAR LACC local=list(var_decl) l=list(instr) RACC { {name= f; params= p; return= Bool; locals= local; code= l} }
 
-| VOID f=IDENT LPAR p=separated_list(COMMA,params) RPAR LACC local=var_decl_list l=list(instr) RACC { {name= f; params= p; return= Void; locals= local; code= l} }
+| VOID f=IDENT LPAR p=separated_list(COMMA,params) RPAR LACC local=list(var_decl) l=list(instr) RACC { {name= f; params= p; return= Void; locals= local; code= l} }
 ;
 
 params:
