@@ -1,5 +1,6 @@
 type expr =
     | Cst  of int
+    | Cst_b of bool
     | Add  of expr * expr
     | Mul  of expr * expr
     | Lt   of expr * expr
