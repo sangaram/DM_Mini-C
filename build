@@ -1,0 +1,8 @@
+#!/bin/bash
+ocamllex minicpreprocessor.mll
+ocamlopt -o minicpreprocessor minicpreprocessor.ml
+menhir -v minicparser.mly
+ocamlc -c minicparser.mli
+ocamllex miniclexer.mll
+ocamlc -c miniclexer.ml
+ocamlopt -o minicc_aux minic.ml minicparser.ml miniclexer.ml minicc.ml

@@ -1,4 +1,4 @@
-# 1 "miniclexer.mll"
+# 1 "lexer.mll"
  
 	open Minicparser;;
 	
@@ -13,7 +13,7 @@
 	
 	exception Eof
 
-# 17 "miniclexer.ml"
+# 17 "lexer.ml"
 let __ocaml_lex_tables = {
   Lexing.lex_base =
    "\000\000\229\255\230\255\078\000\153\000\163\000\238\000\057\001\
@@ -961,223 +961,223 @@ and __ocaml_lex_token_rec lexbuf __ocaml_lex_state =
   match Lexing.engine __ocaml_lex_tables __ocaml_lex_state lexbuf with
       | 0 ->
 let
-# 22 "miniclexer.mll"
+# 22 "lexer.mll"
                    s
-# 967 "miniclexer.ml"
+# 967 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 22 "miniclexer.mll"
+# 22 "lexer.mll"
                      (newline (length s); token lexbuf)
-# 971 "miniclexer.ml"
+# 971 "lexer.ml"
 
   | 1 ->
 let
-# 23 "miniclexer.mll"
+# 23 "lexer.mll"
             s
-# 977 "miniclexer.ml"
+# 977 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 23 "miniclexer.mll"
+# 23 "lexer.mll"
               (next (length s); token lexbuf)
-# 981 "miniclexer.ml"
+# 981 "lexer.ml"
 
   | 2 ->
-# 24 "miniclexer.mll"
+# 24 "lexer.mll"
        (next 1; PLUS)
-# 986 "miniclexer.ml"
+# 986 "lexer.ml"
 
   | 3 ->
-# 25 "miniclexer.mll"
+# 25 "lexer.mll"
        (next 1; FOIS)
-# 991 "miniclexer.ml"
+# 991 "lexer.ml"
 
   | 4 ->
-# 26 "miniclexer.mll"
+# 26 "lexer.mll"
        (next 1; LT)
-# 996 "miniclexer.ml"
+# 996 "lexer.ml"
 
   | 5 ->
-# 27 "miniclexer.mll"
+# 27 "lexer.mll"
        (next 1; COMMA)
-# 1001 "miniclexer.ml"
+# 1001 "lexer.ml"
 
   | 6 ->
-# 28 "miniclexer.mll"
+# 28 "lexer.mll"
        (next 1;SEMI)
-# 1006 "miniclexer.ml"
+# 1006 "lexer.ml"
 
   | 7 ->
-# 29 "miniclexer.mll"
+# 29 "lexer.mll"
        (next 1;EGAL)
-# 1011 "miniclexer.ml"
+# 1011 "lexer.ml"
 
   | 8 ->
-# 30 "miniclexer.mll"
+# 30 "lexer.mll"
        (next 1;LPAR)
-# 1016 "miniclexer.ml"
+# 1016 "lexer.ml"
 
   | 9 ->
-# 31 "miniclexer.mll"
+# 31 "lexer.mll"
        (next 1;RPAR)
-# 1021 "miniclexer.ml"
+# 1021 "lexer.ml"
 
   | 10 ->
-# 32 "miniclexer.mll"
+# 32 "lexer.mll"
        (next 1;LACC)
-# 1026 "miniclexer.ml"
+# 1026 "lexer.ml"
 
   | 11 ->
-# 33 "miniclexer.mll"
+# 33 "lexer.mll"
        (next 1;RACC)
-# 1031 "miniclexer.ml"
+# 1031 "lexer.ml"
 
   | 12 ->
-# 34 "miniclexer.mll"
+# 34 "lexer.mll"
           (next 4; END)
-# 1036 "miniclexer.ml"
+# 1036 "lexer.ml"
 
   | 13 ->
 let
-# 35 "miniclexer.mll"
+# 35 "lexer.mll"
               s
-# 1042 "miniclexer.ml"
+# 1042 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 5) in
-# 35 "miniclexer.mll"
+# 35 "lexer.mll"
                 (next (length s);WHILE)
-# 1046 "miniclexer.ml"
+# 1046 "lexer.ml"
 
   | 14 ->
 let
-# 36 "miniclexer.mll"
+# 36 "lexer.mll"
            s
-# 1052 "miniclexer.ml"
+# 1052 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 2) in
-# 36 "miniclexer.mll"
+# 36 "lexer.mll"
              (next (length s);IF)
-# 1056 "miniclexer.ml"
+# 1056 "lexer.ml"
 
   | 15 ->
 let
-# 37 "miniclexer.mll"
+# 37 "lexer.mll"
              s
-# 1062 "miniclexer.ml"
+# 1062 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 4) in
-# 37 "miniclexer.mll"
+# 37 "lexer.mll"
                (next (length s);ELSE)
-# 1066 "miniclexer.ml"
+# 1066 "lexer.ml"
 
   | 16 ->
 let
-# 38 "miniclexer.mll"
+# 38 "lexer.mll"
                 s
-# 1072 "miniclexer.ml"
+# 1072 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 7) in
-# 38 "miniclexer.mll"
+# 38 "lexer.mll"
                   (next (length s);PUTCHAR)
-# 1076 "miniclexer.ml"
+# 1076 "lexer.ml"
 
   | 17 ->
 let
-# 39 "miniclexer.mll"
+# 39 "lexer.mll"
                s
-# 1082 "miniclexer.ml"
+# 1082 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 6) in
-# 39 "miniclexer.mll"
+# 39 "lexer.mll"
                  (next (length s);RETURN)
-# 1086 "miniclexer.ml"
+# 1086 "lexer.ml"
 
   | 18 ->
 let
-# 40 "miniclexer.mll"
+# 41 "lexer.mll"
             s
-# 1092 "miniclexer.ml"
+# 1092 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 3) in
-# 40 "miniclexer.mll"
+# 41 "lexer.mll"
               (next (length s);INT)
-# 1096 "miniclexer.ml"
+# 1096 "lexer.ml"
 
   | 19 ->
 let
-# 41 "miniclexer.mll"
+# 42 "lexer.mll"
              s
-# 1102 "miniclexer.ml"
+# 1102 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 4) in
-# 41 "miniclexer.mll"
+# 42 "lexer.mll"
                (next (length s);VOID)
-# 1106 "miniclexer.ml"
+# 1106 "lexer.ml"
 
   | 20 ->
 let
-# 42 "miniclexer.mll"
+# 43 "lexer.mll"
              s
-# 1112 "miniclexer.ml"
+# 1112 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 4) in
-# 42 "miniclexer.mll"
+# 43 "lexer.mll"
                (next (length s);BOOL)
-# 1116 "miniclexer.ml"
+# 1116 "lexer.ml"
 
   | 21 ->
 let
-# 43 "miniclexer.mll"
+# 45 "lexer.mll"
              s
-# 1122 "miniclexer.ml"
+# 1122 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 4) in
-# 43 "miniclexer.mll"
+# 45 "lexer.mll"
                (next (length s); CST_B(true))
-# 1126 "miniclexer.ml"
+# 1126 "lexer.ml"
 
   | 22 ->
 let
-# 44 "miniclexer.mll"
+# 46 "lexer.mll"
               s
-# 1132 "miniclexer.ml"
+# 1132 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos (lexbuf.Lexing.lex_start_pos + 5) in
-# 44 "miniclexer.mll"
+# 46 "lexer.mll"
                 (next (length s);CST_B(false))
-# 1136 "miniclexer.ml"
+# 1136 "lexer.ml"
 
   | 23 ->
 let
-# 45 "miniclexer.mll"
+# 47 "lexer.mll"
              n
-# 1142 "miniclexer.ml"
+# 1142 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 45 "miniclexer.mll"
+# 47 "lexer.mll"
                (next (length n); CST(int_of_string n))
-# 1146 "miniclexer.ml"
+# 1146 "lexer.ml"
 
   | 24 ->
 let
-# 46 "miniclexer.mll"
+# 48 "lexer.mll"
             s
-# 1152 "miniclexer.ml"
+# 1152 "lexer.ml"
 = Lexing.sub_lexeme lexbuf lexbuf.Lexing.lex_start_pos lexbuf.Lexing.lex_curr_pos in
-# 46 "miniclexer.mll"
+# 48 "lexer.mll"
               (next (length s); IDENT(s))
-# 1156 "miniclexer.ml"
+# 1156 "lexer.ml"
 
   | 25 ->
 let
-# 47 "miniclexer.mll"
+# 49 "lexer.mll"
         c
-# 1162 "miniclexer.ml"
+# 1162 "lexer.ml"
 = Lexing.sub_lexeme_char lexbuf lexbuf.Lexing.lex_start_pos in
-# 47 "miniclexer.mll"
+# 49 "lexer.mll"
           (failwith(Printf.sprintf "Invalid character: %c at %d:%d" c !line !col))
-# 1166 "miniclexer.ml"
+# 1166 "lexer.ml"
 
   | 26 ->
-# 48 "miniclexer.mll"
+# 50 "lexer.mll"
        (EOF)
-# 1171 "miniclexer.ml"
+# 1171 "lexer.ml"
 
   | __ocaml_lex_state -> lexbuf.Lexing.refill_buff lexbuf;
       __ocaml_lex_token_rec lexbuf __ocaml_lex_state
 
 ;;
 
-# 50 "miniclexer.mll"
+# 52 "lexer.mll"
  
 
-	(*let print_token t =
+	let print_token t =
 		match t with
 		| PLUS -> print "PLUS\n"
 		| FOIS -> print "FOIS\n"
@@ -1213,6 +1213,8 @@ let
 			do
 				print_token (token lexbuf)
 			done
-		with Eof -> close_in cin; exit 0*)
+		with Eof -> close_in cin; exit 0
 
-# 1219 "miniclexer.ml"
+
+
+# 1221 "lexer.ml"

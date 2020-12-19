@@ -18,6 +18,7 @@ type token =
   | IDENT of (string)
   | FOIS
   | EOF
+  | END
   | ELSE
   | EGAL
   | CST_B of (bool)

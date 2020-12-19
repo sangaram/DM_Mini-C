@@ -37,9 +37,11 @@ rule token = parse
 	| "else" as s {next (length s);ELSE}
 	| "putchar" as s {next (length s);PUTCHAR}
 	| "return" as s {next (length s);RETURN}
+	(*| "int" (ident as s) '(' {lescan_token_aux lexbuf (Lexing.from_string ("@int"^ident^"(")}*)
 	| "int" as s {next (length s);INT}
 	| "void" as s {next (length s);VOID}
 	| "bool" as s {next (length s);BOOL}
+	(*| "bool" ident as s '(' {scan_token_aux lexbuf (Lexing.from_string ("@bool"^ident^"(")}*)
 	| "true" as s {next (length s); CST_B(true)}
 	| "false" as s {next (length s);CST_B(false)}
 	| number as n {next (length n); CST(int_of_string n)}
@@ -49,7 +51,7 @@ rule token = parse
 	
 {
 
-	(*let print_token t =
+	let print_token t =
 		match t with
 		| PLUS -> print "PLUS\n"
 		| FOIS -> print "FOIS\n"
@@ -85,5 +87,7 @@ rule token = parse
 			do
 				print_token (token lexbuf)
 			done
-		with Eof -> close_in cin; exit 0*)
+		with Eof -> close_in cin; exit 0
+
+
 }

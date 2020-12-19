@@ -6,7 +6,7 @@ type expr =
     | Lt   of expr * expr
     | Get  of string
     | Call of string * expr list
-    
+   
 type instr =
     | Putchar of expr
     | Set     of string * expr
@@ -14,7 +14,7 @@ type instr =
     | While   of expr * seq
     | Return  of expr
     | Expr    of expr
-  and seq = instr list
+and seq = instr list
 
 type typ =
     | Int

@@ -1,214 +1,152 @@
 State 0:
 prog' -> . prog [ # ]
 -- On INT shift to state 1
--- On BOOL shift to state 4
--- On var_decl shift to state 7
--- On prog shift to state 9
--- On list(var_decl) shift to state 10
--- On VOID reduce production list(var_decl) -> 
--- On INT reduce production list(var_decl) -> 
--- On EOF reduce production list(var_decl) -> 
--- On BOOL reduce production list(var_decl) -> 
-** Conflict on INT BOOL
+-- On BOOL shift to state 3
+-- On var_decl_list shift to state 5
+-- On var_decl shift to state 79
+-- On prog shift to state 104
+-- On END reduce production var_decl_list -> 
 
 State 1:
-var_decl -> INT . IDENT SEMI [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
+var_decl -> INT . IDENT [ SEMI ]
 -- On IDENT shift to state 2
 
 State 2:
-var_decl -> INT IDENT . SEMI [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
--- On SEMI shift to state 3
+var_decl -> INT IDENT . [ SEMI ]
+-- On SEMI reduce production var_decl -> INT IDENT 
 
 State 3:
-var_decl -> INT IDENT SEMI . [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
--- On WHILE reduce production var_decl -> INT IDENT SEMI 
--- On VOID reduce production var_decl -> INT IDENT SEMI 
--- On RETURN reduce production var_decl -> INT IDENT SEMI 
--- On RACC reduce production var_decl -> INT IDENT SEMI 
--- On PUTCHAR reduce production var_decl -> INT IDENT SEMI 
--- On INT reduce production var_decl -> INT IDENT SEMI 
--- On IF reduce production var_decl -> INT IDENT SEMI 
--- On IDENT reduce production var_decl -> INT IDENT SEMI 
--- On EOF reduce production var_decl -> INT IDENT SEMI 
--- On BOOL reduce production var_decl -> INT IDENT SEMI 
+var_decl -> BOOL . IDENT [ SEMI ]
+-- On IDENT shift to state 4
 
 State 4:
-var_decl -> BOOL . IDENT SEMI [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
--- On IDENT shift to state 5
+var_decl -> BOOL IDENT . [ SEMI ]
+-- On SEMI reduce production var_decl -> BOOL IDENT 
 
 State 5:
-var_decl -> BOOL IDENT . SEMI [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
--- On SEMI shift to state 6
+prog -> var_decl_list . END fun_def_list EOF [ # ]
+-- On END shift to state 6
 
 State 6:
-var_decl -> BOOL IDENT SEMI . [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
--- On WHILE reduce production var_decl -> BOOL IDENT SEMI 
--- On VOID reduce production var_decl -> BOOL IDENT SEMI 
--- On RETURN reduce production var_decl -> BOOL IDENT SEMI 
--- On RACC reduce production var_decl -> BOOL IDENT SEMI 
--- On PUTCHAR reduce production var_decl -> BOOL IDENT SEMI 
--- On INT reduce production var_decl -> BOOL IDENT SEMI 
--- On IF reduce production var_decl -> BOOL IDENT SEMI 
--- On IDENT reduce production var_decl -> BOOL IDENT SEMI 
--- On EOF reduce production var_decl -> BOOL IDENT SEMI 
--- On BOOL reduce production var_decl -> BOOL IDENT SEMI 
+prog -> var_decl_list END . fun_def_list EOF [ # ]
+-- On VOID shift to state 7
+-- On INT shift to state 82
+-- On BOOL shift to state 91
+-- On fun_def_list shift to state 100
+-- On fun_def shift to state 103
 
 State 7:
-list(var_decl) -> var_decl . list(var_decl) [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
--- On INT shift to state 1
--- On BOOL shift to state 4
--- On var_decl shift to state 7
--- On list(var_decl) shift to state 8
--- On WHILE reduce production list(var_decl) -> 
--- On VOID reduce production list(var_decl) -> 
--- On RETURN reduce production list(var_decl) -> 
--- On RACC reduce production list(var_decl) -> 
--- On PUTCHAR reduce production list(var_decl) -> 
--- On INT reduce production list(var_decl) -> 
--- On IF reduce production list(var_decl) -> 
--- On IDENT reduce production list(var_decl) -> 
--- On EOF reduce production list(var_decl) -> 
--- On BOOL reduce production list(var_decl) -> 
-** Conflict on INT BOOL
+fun_def -> VOID . IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On IDENT shift to state 8
 
 State 8:
-list(var_decl) -> var_decl list(var_decl) . [ WHILE VOID RETURN RACC PUTCHAR INT IF IDENT EOF BOOL ]
--- On WHILE reduce production list(var_decl) -> var_decl list(var_decl) 
--- On VOID reduce production list(var_decl) -> var_decl list(var_decl) 
--- On RETURN reduce production list(var_decl) -> var_decl list(var_decl) 
--- On RACC reduce production list(var_decl) -> var_decl list(var_decl) 
--- On PUTCHAR reduce production list(var_decl) -> var_decl list(var_decl) 
--- On INT reduce production list(var_decl) -> var_decl list(var_decl) 
--- On IF reduce production list(var_decl) -> var_decl list(var_decl) 
--- On IDENT reduce production list(var_decl) -> var_decl list(var_decl) 
--- On EOF reduce production list(var_decl) -> var_decl list(var_decl) 
--- On BOOL reduce production list(var_decl) -> var_decl list(var_decl) 
+fun_def -> VOID IDENT . LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On LPAR shift to state 9
 
 State 9:
-prog' -> prog . [ # ]
--- On # accept prog
-
-State 10:
-prog -> list(var_decl) . list(fun_def) EOF [ # ]
--- On VOID shift to state 11
--- On INT shift to state 83
--- On BOOL shift to state 92
--- On list(fun_def) shift to state 101
--- On fun_def shift to state 103
--- On EOF reduce production list(fun_def) -> 
-
-State 11:
-fun_def -> VOID . IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On IDENT shift to state 12
-
-State 12:
-fun_def -> VOID IDENT . LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On LPAR shift to state 13
-
-State 13:
-fun_def -> VOID IDENT LPAR . loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On INT shift to state 14
--- On BOOL shift to state 16
--- On separated_nonempty_list(COMMA,params) shift to state 18
--- On params shift to state 19
--- On loption(separated_nonempty_list(COMMA,params)) shift to state 22
+fun_def -> VOID IDENT LPAR . loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On INT shift to state 10
+-- On BOOL shift to state 12
+-- On separated_nonempty_list(COMMA,params) shift to state 14
+-- On params shift to state 15
+-- On loption(separated_nonempty_list(COMMA,params)) shift to state 18
 -- On RPAR reduce production loption(separated_nonempty_list(COMMA,params)) -> 
 
-State 14:
+State 10:
 params -> INT . IDENT [ RPAR COMMA ]
--- On IDENT shift to state 15
+-- On IDENT shift to state 11
 
-State 15:
+State 11:
 params -> INT IDENT . [ RPAR COMMA ]
 -- On RPAR reduce production params -> INT IDENT 
 -- On COMMA reduce production params -> INT IDENT 
 
-State 16:
+State 12:
 params -> BOOL . IDENT [ RPAR COMMA ]
--- On IDENT shift to state 17
+-- On IDENT shift to state 13
 
-State 17:
+State 13:
 params -> BOOL IDENT . [ RPAR COMMA ]
 -- On RPAR reduce production params -> BOOL IDENT 
 -- On COMMA reduce production params -> BOOL IDENT 
 
-State 18:
+State 14:
 loption(separated_nonempty_list(COMMA,params)) -> separated_nonempty_list(COMMA,params) . [ RPAR ]
 -- On RPAR reduce production loption(separated_nonempty_list(COMMA,params)) -> separated_nonempty_list(COMMA,params) 
 
-State 19:
+State 15:
 separated_nonempty_list(COMMA,params) -> params . [ RPAR ]
 separated_nonempty_list(COMMA,params) -> params . COMMA separated_nonempty_list(COMMA,params) [ RPAR ]
--- On COMMA shift to state 20
+-- On COMMA shift to state 16
 -- On RPAR reduce production separated_nonempty_list(COMMA,params) -> params 
 
-State 20:
+State 16:
 separated_nonempty_list(COMMA,params) -> params COMMA . separated_nonempty_list(COMMA,params) [ RPAR ]
--- On INT shift to state 14
--- On BOOL shift to state 16
--- On separated_nonempty_list(COMMA,params) shift to state 21
--- On params shift to state 19
+-- On INT shift to state 10
+-- On BOOL shift to state 12
+-- On separated_nonempty_list(COMMA,params) shift to state 17
+-- On params shift to state 15
 
-State 21:
+State 17:
 separated_nonempty_list(COMMA,params) -> params COMMA separated_nonempty_list(COMMA,params) . [ RPAR ]
 -- On RPAR reduce production separated_nonempty_list(COMMA,params) -> params COMMA separated_nonempty_list(COMMA,params) 
 
-State 22:
-fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) . RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On RPAR shift to state 23
+State 18:
+fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) . RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On RPAR shift to state 19
 
-State 23:
-fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR . LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On LACC shift to state 24
+State 19:
+fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR . LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On LACC shift to state 20
 
-State 24:
-fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC . list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
+State 20:
+fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC . var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
 -- On INT shift to state 1
--- On BOOL shift to state 4
--- On var_decl shift to state 7
--- On list(var_decl) shift to state 25
--- On WHILE reduce production list(var_decl) -> 
--- On RETURN reduce production list(var_decl) -> 
--- On RACC reduce production list(var_decl) -> 
--- On PUTCHAR reduce production list(var_decl) -> 
--- On IF reduce production list(var_decl) -> 
--- On IDENT reduce production list(var_decl) -> 
+-- On BOOL shift to state 3
+-- On var_decl_list shift to state 21
+-- On var_decl shift to state 79
+-- On WHILE reduce production var_decl_list -> 
+-- On RETURN reduce production var_decl_list -> 
+-- On RACC reduce production var_decl_list -> 
+-- On PUTCHAR reduce production var_decl_list -> 
+-- On IF reduce production var_decl_list -> 
+-- On IDENT reduce production var_decl_list -> 
 
-State 25:
-fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) . list(instr) RACC [ VOID INT EOF BOOL ]
--- On WHILE shift to state 26
--- On RETURN shift to state 50
--- On PUTCHAR shift to state 53
--- On IF shift to state 58
--- On IDENT shift to state 63
--- On list(instr) shift to state 81
--- On instr shift to state 77
+State 21:
+fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list . list(instr) RACC [ VOID INT EOF BOOL ]
+-- On WHILE shift to state 22
+-- On RETURN shift to state 46
+-- On PUTCHAR shift to state 49
+-- On IF shift to state 54
+-- On IDENT shift to state 59
+-- On list(instr) shift to state 77
+-- On instr shift to state 73
 -- On RACC reduce production list(instr) -> 
 
-State 26:
+State 22:
 instr -> WHILE . LPAR expr RPAR LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 27
+-- On LPAR shift to state 23
 
-State 27:
+State 23:
 instr -> WHILE LPAR . expr RPAR LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 47
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 43
 
-State 28:
+State 24:
 expr -> LPAR . expr RPAR [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 45
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 41
 
-State 29:
+State 25:
 expr -> IDENT . [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> IDENT . LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LPAR shift to state 30
+-- On LPAR shift to state 26
 -- On SEMI reduce production expr -> IDENT 
 -- On RPAR reduce production expr -> IDENT 
 -- On PLUS reduce production expr -> IDENT 
@@ -216,18 +154,18 @@ expr -> IDENT . LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR [ SEMI RP
 -- On FOIS reduce production expr -> IDENT 
 -- On COMMA reduce production expr -> IDENT 
 
-State 30:
+State 26:
 expr -> IDENT LPAR . loption(separated_nonempty_list(COMMA,expr)) RPAR [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On separated_nonempty_list(COMMA,expr) shift to state 33
--- On loption(separated_nonempty_list(COMMA,expr)) shift to state 34
--- On expr shift to state 36
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On separated_nonempty_list(COMMA,expr) shift to state 29
+-- On loption(separated_nonempty_list(COMMA,expr)) shift to state 30
+-- On expr shift to state 32
 -- On RPAR reduce production loption(separated_nonempty_list(COMMA,expr)) -> 
 
-State 31:
+State 27:
 expr -> CST_B . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On SEMI reduce production expr -> CST_B 
 -- On RPAR reduce production expr -> CST_B 
@@ -236,7 +174,7 @@ expr -> CST_B . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On FOIS reduce production expr -> CST_B 
 -- On COMMA reduce production expr -> CST_B 
 
-State 32:
+State 28:
 expr -> CST . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On SEMI reduce production expr -> CST 
 -- On RPAR reduce production expr -> CST 
@@ -245,15 +183,15 @@ expr -> CST . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On FOIS reduce production expr -> CST 
 -- On COMMA reduce production expr -> CST 
 
-State 33:
+State 29:
 loption(separated_nonempty_list(COMMA,expr)) -> separated_nonempty_list(COMMA,expr) . [ RPAR ]
 -- On RPAR reduce production loption(separated_nonempty_list(COMMA,expr)) -> separated_nonempty_list(COMMA,expr) 
 
-State 34:
+State 30:
 expr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) . RPAR [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On RPAR shift to state 35
+-- On RPAR shift to state 31
 
-State 35:
+State 31:
 expr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On SEMI reduce production expr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR 
 -- On RPAR reduce production expr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR 
@@ -262,47 +200,47 @@ expr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR . [ SEMI RP
 -- On FOIS reduce production expr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR 
 -- On COMMA reduce production expr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR 
 
-State 36:
+State 32:
 expr -> expr . PLUS expr [ RPAR PLUS LT FOIS COMMA ]
 expr -> expr . FOIS expr [ RPAR PLUS LT FOIS COMMA ]
 expr -> expr . LT expr [ RPAR PLUS LT FOIS COMMA ]
 separated_nonempty_list(COMMA,expr) -> expr . [ RPAR ]
 separated_nonempty_list(COMMA,expr) -> expr . COMMA separated_nonempty_list(COMMA,expr) [ RPAR ]
--- On PLUS shift to state 37
--- On LT shift to state 39
--- On FOIS shift to state 41
--- On COMMA shift to state 43
+-- On PLUS shift to state 33
+-- On LT shift to state 35
+-- On FOIS shift to state 37
+-- On COMMA shift to state 39
 -- On RPAR reduce production separated_nonempty_list(COMMA,expr) -> expr 
 
-State 37:
+State 33:
 expr -> expr PLUS . expr [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 38
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 34
 
-State 38:
+State 34:
 expr -> expr . PLUS expr [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr PLUS expr . [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr . FOIS expr [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr . LT expr [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LT shift to state 39
--- On FOIS shift to state 41
+-- On LT shift to state 35
+-- On FOIS shift to state 37
 -- On SEMI reduce production expr -> expr PLUS expr 
 -- On RPAR reduce production expr -> expr PLUS expr 
 -- On PLUS reduce production expr -> expr PLUS expr 
 -- On COMMA reduce production expr -> expr PLUS expr 
 
-State 39:
+State 35:
 expr -> expr LT . expr [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 40
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 36
 
-State 40:
+State 36:
 expr -> expr . PLUS expr [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr . FOIS expr [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr . LT expr [ SEMI RPAR PLUS LT FOIS COMMA ]
@@ -313,50 +251,50 @@ expr -> expr LT expr . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On FOIS reduce production expr -> expr LT expr 
 -- On COMMA reduce production expr -> expr LT expr 
 
-State 41:
+State 37:
 expr -> expr FOIS . expr [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 42
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 38
 
-State 42:
+State 38:
 expr -> expr . PLUS expr [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr . FOIS expr [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr FOIS expr . [ SEMI RPAR PLUS LT FOIS COMMA ]
 expr -> expr . LT expr [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On LT shift to state 39
+-- On LT shift to state 35
 -- On SEMI reduce production expr -> expr FOIS expr 
 -- On RPAR reduce production expr -> expr FOIS expr 
 -- On PLUS reduce production expr -> expr FOIS expr 
 -- On FOIS reduce production expr -> expr FOIS expr 
 -- On COMMA reduce production expr -> expr FOIS expr 
 
-State 43:
+State 39:
 separated_nonempty_list(COMMA,expr) -> expr COMMA . separated_nonempty_list(COMMA,expr) [ RPAR ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On separated_nonempty_list(COMMA,expr) shift to state 44
--- On expr shift to state 36
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On separated_nonempty_list(COMMA,expr) shift to state 40
+-- On expr shift to state 32
 
-State 44:
+State 40:
 separated_nonempty_list(COMMA,expr) -> expr COMMA separated_nonempty_list(COMMA,expr) . [ RPAR ]
 -- On RPAR reduce production separated_nonempty_list(COMMA,expr) -> expr COMMA separated_nonempty_list(COMMA,expr) 
 
-State 45:
+State 41:
 expr -> expr . PLUS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . FOIS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . LT expr [ RPAR PLUS LT FOIS ]
 expr -> LPAR expr . RPAR [ SEMI RPAR PLUS LT FOIS COMMA ]
--- On RPAR shift to state 46
--- On PLUS shift to state 37
--- On LT shift to state 39
--- On FOIS shift to state 41
+-- On RPAR shift to state 42
+-- On PLUS shift to state 33
+-- On LT shift to state 35
+-- On FOIS shift to state 37
 
-State 46:
+State 42:
 expr -> LPAR expr RPAR . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On SEMI reduce production expr -> LPAR expr RPAR 
 -- On RPAR reduce production expr -> LPAR expr RPAR 
@@ -365,50 +303,50 @@ expr -> LPAR expr RPAR . [ SEMI RPAR PLUS LT FOIS COMMA ]
 -- On FOIS reduce production expr -> LPAR expr RPAR 
 -- On COMMA reduce production expr -> LPAR expr RPAR 
 
-State 47:
+State 43:
 expr -> expr . PLUS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . FOIS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . LT expr [ RPAR PLUS LT FOIS ]
 instr -> WHILE LPAR expr . RPAR LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On RPAR shift to state 48
--- On PLUS shift to state 37
--- On LT shift to state 39
--- On FOIS shift to state 41
+-- On RPAR shift to state 44
+-- On PLUS shift to state 33
+-- On LT shift to state 35
+-- On FOIS shift to state 37
 
-State 48:
+State 44:
 instr -> WHILE LPAR expr RPAR . LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LACC shift to state 49
+-- On LACC shift to state 45
 
-State 49:
+State 45:
 instr -> WHILE LPAR expr RPAR LACC . list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On WHILE shift to state 26
--- On RETURN shift to state 50
--- On PUTCHAR shift to state 53
--- On IF shift to state 58
--- On IDENT shift to state 63
--- On list(instr) shift to state 79
--- On instr shift to state 77
+-- On WHILE shift to state 22
+-- On RETURN shift to state 46
+-- On PUTCHAR shift to state 49
+-- On IF shift to state 54
+-- On IDENT shift to state 59
+-- On list(instr) shift to state 75
+-- On instr shift to state 73
 -- On RACC reduce production list(instr) -> 
 
-State 50:
+State 46:
 instr -> RETURN . expr SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 51
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 47
 
-State 51:
+State 47:
 expr -> expr . PLUS expr [ SEMI PLUS LT FOIS ]
 expr -> expr . FOIS expr [ SEMI PLUS LT FOIS ]
 expr -> expr . LT expr [ SEMI PLUS LT FOIS ]
 instr -> RETURN expr . SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On SEMI shift to state 52
--- On PLUS shift to state 37
--- On LT shift to state 39
--- On FOIS shift to state 41
+-- On SEMI shift to state 48
+-- On PLUS shift to state 33
+-- On LT shift to state 35
+-- On FOIS shift to state 37
 
-State 52:
+State 48:
 instr -> RETURN expr SEMI . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On WHILE reduce production instr -> RETURN expr SEMI 
 -- On RETURN reduce production instr -> RETURN expr SEMI 
@@ -417,33 +355,33 @@ instr -> RETURN expr SEMI . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On IF reduce production instr -> RETURN expr SEMI 
 -- On IDENT reduce production instr -> RETURN expr SEMI 
 
-State 53:
+State 49:
 instr -> PUTCHAR . LPAR expr RPAR SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 54
+-- On LPAR shift to state 50
 
-State 54:
+State 50:
 instr -> PUTCHAR LPAR . expr RPAR SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 55
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 51
 
-State 55:
+State 51:
 expr -> expr . PLUS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . FOIS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . LT expr [ RPAR PLUS LT FOIS ]
 instr -> PUTCHAR LPAR expr . RPAR SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On RPAR shift to state 56
--- On PLUS shift to state 37
--- On LT shift to state 39
--- On FOIS shift to state 41
+-- On RPAR shift to state 52
+-- On PLUS shift to state 33
+-- On LT shift to state 35
+-- On FOIS shift to state 37
 
-State 56:
+State 52:
 instr -> PUTCHAR LPAR expr RPAR . SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On SEMI shift to state 57
+-- On SEMI shift to state 53
 
-State 57:
+State 53:
 instr -> PUTCHAR LPAR expr RPAR SEMI . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On WHILE reduce production instr -> PUTCHAR LPAR expr RPAR SEMI 
 -- On RETURN reduce production instr -> PUTCHAR LPAR expr RPAR SEMI 
@@ -452,74 +390,74 @@ instr -> PUTCHAR LPAR expr RPAR SEMI . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On IF reduce production instr -> PUTCHAR LPAR expr RPAR SEMI 
 -- On IDENT reduce production instr -> PUTCHAR LPAR expr RPAR SEMI 
 
-State 58:
+State 54:
 instr -> IF . LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IF . LPAR expr RPAR LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 59
+-- On LPAR shift to state 55
 
-State 59:
+State 55:
 instr -> IF LPAR . expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IF LPAR . expr RPAR LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 60
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 56
 
-State 60:
+State 56:
 expr -> expr . PLUS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . FOIS expr [ RPAR PLUS LT FOIS ]
 expr -> expr . LT expr [ RPAR PLUS LT FOIS ]
 instr -> IF LPAR expr . RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IF LPAR expr . RPAR LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On RPAR shift to state 61
--- On PLUS shift to state 37
--- On LT shift to state 39
--- On FOIS shift to state 41
+-- On RPAR shift to state 57
+-- On PLUS shift to state 33
+-- On LT shift to state 35
+-- On FOIS shift to state 37
 
-State 61:
+State 57:
 instr -> IF LPAR expr RPAR . LACC list(instr) RACC ELSE LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IF LPAR expr RPAR . LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LACC shift to state 62
+-- On LACC shift to state 58
 
-State 62:
+State 58:
 instr -> IF LPAR expr RPAR LACC . list(instr) RACC ELSE LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IF LPAR expr RPAR LACC . list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On WHILE shift to state 26
--- On RETURN shift to state 50
--- On PUTCHAR shift to state 53
--- On IF shift to state 58
--- On IDENT shift to state 63
--- On list(instr) shift to state 71
--- On instr shift to state 77
+-- On WHILE shift to state 22
+-- On RETURN shift to state 46
+-- On PUTCHAR shift to state 49
+-- On IF shift to state 54
+-- On IDENT shift to state 59
+-- On list(instr) shift to state 67
+-- On instr shift to state 73
 -- On RACC reduce production list(instr) -> 
 
-State 63:
+State 59:
 instr -> IDENT . EGAL expr SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IDENT . LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 64
--- On EGAL shift to state 68
+-- On LPAR shift to state 60
+-- On EGAL shift to state 64
 
-State 64:
+State 60:
 instr -> IDENT LPAR . loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On separated_nonempty_list(COMMA,expr) shift to state 33
--- On loption(separated_nonempty_list(COMMA,expr)) shift to state 65
--- On expr shift to state 36
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On separated_nonempty_list(COMMA,expr) shift to state 29
+-- On loption(separated_nonempty_list(COMMA,expr)) shift to state 61
+-- On expr shift to state 32
 -- On RPAR reduce production loption(separated_nonempty_list(COMMA,expr)) -> 
 
-State 65:
+State 61:
 instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) . RPAR SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On RPAR shift to state 66
+-- On RPAR shift to state 62
 
-State 66:
+State 62:
 instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR . SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On SEMI shift to state 67
+-- On SEMI shift to state 63
 
-State 67:
+State 63:
 instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On WHILE reduce production instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI 
 -- On RETURN reduce production instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI 
@@ -528,25 +466,25 @@ instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI . [ W
 -- On IF reduce production instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI 
 -- On IDENT reduce production instr -> IDENT LPAR loption(separated_nonempty_list(COMMA,expr)) RPAR SEMI 
 
-State 68:
+State 64:
 instr -> IDENT EGAL . expr SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LPAR shift to state 28
--- On IDENT shift to state 29
--- On CST_B shift to state 31
--- On CST shift to state 32
--- On expr shift to state 69
+-- On LPAR shift to state 24
+-- On IDENT shift to state 25
+-- On CST_B shift to state 27
+-- On CST shift to state 28
+-- On expr shift to state 65
 
-State 69:
+State 65:
 expr -> expr . PLUS expr [ SEMI PLUS LT FOIS ]
 expr -> expr . FOIS expr [ SEMI PLUS LT FOIS ]
 expr -> expr . LT expr [ SEMI PLUS LT FOIS ]
 instr -> IDENT EGAL expr . SEMI [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On SEMI shift to state 70
--- On PLUS shift to state 37
--- On LT shift to state 39
--- On FOIS shift to state 41
+-- On SEMI shift to state 66
+-- On PLUS shift to state 33
+-- On LT shift to state 35
+-- On FOIS shift to state 37
 
-State 70:
+State 66:
 instr -> IDENT EGAL expr SEMI . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On WHILE reduce production instr -> IDENT EGAL expr SEMI 
 -- On RETURN reduce production instr -> IDENT EGAL expr SEMI 
@@ -555,15 +493,15 @@ instr -> IDENT EGAL expr SEMI . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On IF reduce production instr -> IDENT EGAL expr SEMI 
 -- On IDENT reduce production instr -> IDENT EGAL expr SEMI 
 
-State 71:
+State 67:
 instr -> IF LPAR expr RPAR LACC list(instr) . RACC ELSE LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IF LPAR expr RPAR LACC list(instr) . RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On RACC shift to state 72
+-- On RACC shift to state 68
 
-State 72:
+State 68:
 instr -> IF LPAR expr RPAR LACC list(instr) RACC . ELSE LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 instr -> IF LPAR expr RPAR LACC list(instr) RACC . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On ELSE shift to state 73
+-- On ELSE shift to state 69
 -- On WHILE reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC 
 -- On RETURN reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC 
 -- On RACC reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC 
@@ -571,26 +509,26 @@ instr -> IF LPAR expr RPAR LACC list(instr) RACC . [ WHILE RETURN RACC PUTCHAR I
 -- On IF reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC 
 -- On IDENT reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC 
 
-State 73:
+State 69:
 instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE . LACC list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On LACC shift to state 74
+-- On LACC shift to state 70
 
-State 74:
+State 70:
 instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC . list(instr) RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On WHILE shift to state 26
--- On RETURN shift to state 50
--- On PUTCHAR shift to state 53
--- On IF shift to state 58
--- On IDENT shift to state 63
--- On list(instr) shift to state 75
--- On instr shift to state 77
+-- On WHILE shift to state 22
+-- On RETURN shift to state 46
+-- On PUTCHAR shift to state 49
+-- On IF shift to state 54
+-- On IDENT shift to state 59
+-- On list(instr) shift to state 71
+-- On instr shift to state 73
 -- On RACC reduce production list(instr) -> 
 
-State 75:
+State 71:
 instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) . RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On RACC shift to state 76
+-- On RACC shift to state 72
 
-State 76:
+State 72:
 instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On WHILE reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC 
 -- On RETURN reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC 
@@ -599,26 +537,26 @@ instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC . [ 
 -- On IF reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC 
 -- On IDENT reduce production instr -> IF LPAR expr RPAR LACC list(instr) RACC ELSE LACC list(instr) RACC 
 
-State 77:
+State 73:
 list(instr) -> instr . list(instr) [ RACC ]
--- On WHILE shift to state 26
--- On RETURN shift to state 50
--- On PUTCHAR shift to state 53
--- On IF shift to state 58
--- On IDENT shift to state 63
--- On list(instr) shift to state 78
--- On instr shift to state 77
+-- On WHILE shift to state 22
+-- On RETURN shift to state 46
+-- On PUTCHAR shift to state 49
+-- On IF shift to state 54
+-- On IDENT shift to state 59
+-- On list(instr) shift to state 74
+-- On instr shift to state 73
 -- On RACC reduce production list(instr) -> 
 
-State 78:
+State 74:
 list(instr) -> instr list(instr) . [ RACC ]
 -- On RACC reduce production list(instr) -> instr list(instr) 
 
-State 79:
+State 75:
 instr -> WHILE LPAR expr RPAR LACC list(instr) . RACC [ WHILE RETURN RACC PUTCHAR IF IDENT ]
--- On RACC shift to state 80
+-- On RACC shift to state 76
 
-State 80:
+State 76:
 instr -> WHILE LPAR expr RPAR LACC list(instr) RACC . [ WHILE RETURN RACC PUTCHAR IF IDENT ]
 -- On WHILE reduce production instr -> WHILE LPAR expr RPAR LACC list(instr) RACC 
 -- On RETURN reduce production instr -> WHILE LPAR expr RPAR LACC list(instr) RACC 
@@ -627,155 +565,193 @@ instr -> WHILE LPAR expr RPAR LACC list(instr) RACC . [ WHILE RETURN RACC PUTCHA
 -- On IF reduce production instr -> WHILE LPAR expr RPAR LACC list(instr) RACC 
 -- On IDENT reduce production instr -> WHILE LPAR expr RPAR LACC list(instr) RACC 
 
+State 77:
+fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) . RACC [ VOID INT EOF BOOL ]
+-- On RACC shift to state 78
+
+State 78:
+fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC . [ VOID INT EOF BOOL ]
+-- On VOID reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On INT reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On EOF reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On BOOL reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+
+State 79:
+var_decl_list -> var_decl . SEMI var_decl_list [ WHILE RETURN RACC PUTCHAR IF IDENT END ]
+-- On SEMI shift to state 80
+
+State 80:
+var_decl_list -> var_decl SEMI . var_decl_list [ WHILE RETURN RACC PUTCHAR IF IDENT END ]
+-- On INT shift to state 1
+-- On BOOL shift to state 3
+-- On var_decl_list shift to state 81
+-- On var_decl shift to state 79
+-- On WHILE reduce production var_decl_list -> 
+-- On RETURN reduce production var_decl_list -> 
+-- On RACC reduce production var_decl_list -> 
+-- On PUTCHAR reduce production var_decl_list -> 
+-- On IF reduce production var_decl_list -> 
+-- On IDENT reduce production var_decl_list -> 
+-- On END reduce production var_decl_list -> 
+
 State 81:
-fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) . RACC [ VOID INT EOF BOOL ]
--- On RACC shift to state 82
+var_decl_list -> var_decl SEMI var_decl_list . [ WHILE RETURN RACC PUTCHAR IF IDENT END ]
+-- On WHILE reduce production var_decl_list -> var_decl SEMI var_decl_list 
+-- On RETURN reduce production var_decl_list -> var_decl SEMI var_decl_list 
+-- On RACC reduce production var_decl_list -> var_decl SEMI var_decl_list 
+-- On PUTCHAR reduce production var_decl_list -> var_decl SEMI var_decl_list 
+-- On IF reduce production var_decl_list -> var_decl SEMI var_decl_list 
+-- On IDENT reduce production var_decl_list -> var_decl SEMI var_decl_list 
+-- On END reduce production var_decl_list -> var_decl SEMI var_decl_list 
 
 State 82:
-fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC . [ VOID INT EOF BOOL ]
--- On VOID reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On INT reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On EOF reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On BOOL reduce production fun_def -> VOID IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
+fun_def -> INT . IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On IDENT shift to state 83
 
 State 83:
-fun_def -> INT . IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On IDENT shift to state 84
+fun_def -> INT IDENT . LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On LPAR shift to state 84
 
 State 84:
-fun_def -> INT IDENT . LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On LPAR shift to state 85
+fun_def -> INT IDENT LPAR . loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On INT shift to state 10
+-- On BOOL shift to state 12
+-- On separated_nonempty_list(COMMA,params) shift to state 14
+-- On params shift to state 15
+-- On loption(separated_nonempty_list(COMMA,params)) shift to state 85
+-- On RPAR reduce production loption(separated_nonempty_list(COMMA,params)) -> 
 
 State 85:
-fun_def -> INT IDENT LPAR . loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On INT shift to state 14
--- On BOOL shift to state 16
--- On separated_nonempty_list(COMMA,params) shift to state 18
--- On params shift to state 19
--- On loption(separated_nonempty_list(COMMA,params)) shift to state 86
--- On RPAR reduce production loption(separated_nonempty_list(COMMA,params)) -> 
+fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) . RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On RPAR shift to state 86
 
 State 86:
-fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) . RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On RPAR shift to state 87
+fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR . LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On LACC shift to state 87
 
 State 87:
-fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR . LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On LACC shift to state 88
+fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC . var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On INT shift to state 1
+-- On BOOL shift to state 3
+-- On var_decl_list shift to state 88
+-- On var_decl shift to state 79
+-- On WHILE reduce production var_decl_list -> 
+-- On RETURN reduce production var_decl_list -> 
+-- On RACC reduce production var_decl_list -> 
+-- On PUTCHAR reduce production var_decl_list -> 
+-- On IF reduce production var_decl_list -> 
+-- On IDENT reduce production var_decl_list -> 
 
 State 88:
-fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC . list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On INT shift to state 1
--- On BOOL shift to state 4
--- On var_decl shift to state 7
--- On list(var_decl) shift to state 89
--- On WHILE reduce production list(var_decl) -> 
--- On RETURN reduce production list(var_decl) -> 
--- On RACC reduce production list(var_decl) -> 
--- On PUTCHAR reduce production list(var_decl) -> 
--- On IF reduce production list(var_decl) -> 
--- On IDENT reduce production list(var_decl) -> 
+fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list . list(instr) RACC [ VOID INT EOF BOOL ]
+-- On WHILE shift to state 22
+-- On RETURN shift to state 46
+-- On PUTCHAR shift to state 49
+-- On IF shift to state 54
+-- On IDENT shift to state 59
+-- On list(instr) shift to state 89
+-- On instr shift to state 73
+-- On RACC reduce production list(instr) -> 
 
 State 89:
-fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) . list(instr) RACC [ VOID INT EOF BOOL ]
--- On WHILE shift to state 26
--- On RETURN shift to state 50
--- On PUTCHAR shift to state 53
--- On IF shift to state 58
--- On IDENT shift to state 63
--- On list(instr) shift to state 90
--- On instr shift to state 77
--- On RACC reduce production list(instr) -> 
+fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) . RACC [ VOID INT EOF BOOL ]
+-- On RACC shift to state 90
 
 State 90:
-fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) . RACC [ VOID INT EOF BOOL ]
--- On RACC shift to state 91
+fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC . [ VOID INT EOF BOOL ]
+-- On VOID reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On INT reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On EOF reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On BOOL reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
 
 State 91:
-fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC . [ VOID INT EOF BOOL ]
--- On VOID reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On INT reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On EOF reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On BOOL reduce production fun_def -> INT IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
+fun_def -> BOOL . IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On IDENT shift to state 92
 
 State 92:
-fun_def -> BOOL . IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On IDENT shift to state 93
+fun_def -> BOOL IDENT . LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On LPAR shift to state 93
 
 State 93:
-fun_def -> BOOL IDENT . LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On LPAR shift to state 94
-
-State 94:
-fun_def -> BOOL IDENT LPAR . loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On INT shift to state 14
--- On BOOL shift to state 16
--- On separated_nonempty_list(COMMA,params) shift to state 18
--- On params shift to state 19
--- On loption(separated_nonempty_list(COMMA,params)) shift to state 95
+fun_def -> BOOL IDENT LPAR . loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On INT shift to state 10
+-- On BOOL shift to state 12
+-- On separated_nonempty_list(COMMA,params) shift to state 14
+-- On params shift to state 15
+-- On loption(separated_nonempty_list(COMMA,params)) shift to state 94
 -- On RPAR reduce production loption(separated_nonempty_list(COMMA,params)) -> 
 
+State 94:
+fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) . RPAR LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On RPAR shift to state 95
+
 State 95:
-fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) . RPAR LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On RPAR shift to state 96
+fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR . LACC var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On LACC shift to state 96
 
 State 96:
-fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR . LACC list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On LACC shift to state 97
+fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC . var_decl_list list(instr) RACC [ VOID INT EOF BOOL ]
+-- On INT shift to state 1
+-- On BOOL shift to state 3
+-- On var_decl_list shift to state 97
+-- On var_decl shift to state 79
+-- On WHILE reduce production var_decl_list -> 
+-- On RETURN reduce production var_decl_list -> 
+-- On RACC reduce production var_decl_list -> 
+-- On PUTCHAR reduce production var_decl_list -> 
+-- On IF reduce production var_decl_list -> 
+-- On IDENT reduce production var_decl_list -> 
 
 State 97:
-fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC . list(var_decl) list(instr) RACC [ VOID INT EOF BOOL ]
--- On INT shift to state 1
--- On BOOL shift to state 4
--- On var_decl shift to state 7
--- On list(var_decl) shift to state 98
--- On WHILE reduce production list(var_decl) -> 
--- On RETURN reduce production list(var_decl) -> 
--- On RACC reduce production list(var_decl) -> 
--- On PUTCHAR reduce production list(var_decl) -> 
--- On IF reduce production list(var_decl) -> 
--- On IDENT reduce production list(var_decl) -> 
-
-State 98:
-fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) . list(instr) RACC [ VOID INT EOF BOOL ]
--- On WHILE shift to state 26
--- On RETURN shift to state 50
--- On PUTCHAR shift to state 53
--- On IF shift to state 58
--- On IDENT shift to state 63
--- On list(instr) shift to state 99
--- On instr shift to state 77
+fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list . list(instr) RACC [ VOID INT EOF BOOL ]
+-- On WHILE shift to state 22
+-- On RETURN shift to state 46
+-- On PUTCHAR shift to state 49
+-- On IF shift to state 54
+-- On IDENT shift to state 59
+-- On list(instr) shift to state 98
+-- On instr shift to state 73
 -- On RACC reduce production list(instr) -> 
 
+State 98:
+fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) . RACC [ VOID INT EOF BOOL ]
+-- On RACC shift to state 99
+
 State 99:
-fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) . RACC [ VOID INT EOF BOOL ]
--- On RACC shift to state 100
+fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC . [ VOID INT EOF BOOL ]
+-- On VOID reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On INT reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On EOF reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
+-- On BOOL reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC var_decl_list list(instr) RACC 
 
 State 100:
-fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC . [ VOID INT EOF BOOL ]
--- On VOID reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On INT reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On EOF reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
--- On BOOL reduce production fun_def -> BOOL IDENT LPAR loption(separated_nonempty_list(COMMA,params)) RPAR LACC list(var_decl) list(instr) RACC 
+fun_def_list -> fun_def_list . fun_def [ VOID INT EOF BOOL ]
+prog -> var_decl_list END fun_def_list . EOF [ # ]
+-- On VOID shift to state 7
+-- On INT shift to state 82
+-- On EOF shift to state 101
+-- On BOOL shift to state 91
+-- On fun_def shift to state 102
 
 State 101:
-prog -> list(var_decl) list(fun_def) . EOF [ # ]
--- On EOF shift to state 102
+prog -> var_decl_list END fun_def_list EOF . [ # ]
+-- On # reduce production prog -> var_decl_list END fun_def_list EOF 
 
 State 102:
-prog -> list(var_decl) list(fun_def) EOF . [ # ]
--- On # reduce production prog -> list(var_decl) list(fun_def) EOF 
+fun_def_list -> fun_def_list fun_def . [ VOID INT EOF BOOL ]
+-- On VOID reduce production fun_def_list -> fun_def_list fun_def 
+-- On INT reduce production fun_def_list -> fun_def_list fun_def 
+-- On EOF reduce production fun_def_list -> fun_def_list fun_def 
+-- On BOOL reduce production fun_def_list -> fun_def_list fun_def 
 
 State 103:
-list(fun_def) -> fun_def . list(fun_def) [ EOF ]
--- On VOID shift to state 11
--- On INT shift to state 83
--- On BOOL shift to state 92
--- On list(fun_def) shift to state 104
--- On fun_def shift to state 103
--- On EOF reduce production list(fun_def) -> 
+fun_def_list -> fun_def . [ VOID INT EOF BOOL ]
+-- On VOID reduce production fun_def_list -> fun_def 
+-- On INT reduce production fun_def_list -> fun_def 
+-- On EOF reduce production fun_def_list -> fun_def 
+-- On BOOL reduce production fun_def_list -> fun_def 
 
 State 104:
-list(fun_def) -> fun_def list(fun_def) . [ EOF ]
--- On EOF reduce production list(fun_def) -> fun_def list(fun_def) 
+prog' -> prog . [ # ]
+-- On # accept prog
 
