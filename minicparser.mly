@@ -14,8 +14,8 @@
 %left FOIS
 %nonassoc LT
 
-%type <string * Minic.typ> var_decl
-%type <(string * Minic.typ) list> var_decl_list
+%type <string * Minic.typ * Minic.expr option> var_decl
+%type <(string * Minic.typ * Minic.expr option) list> var_decl_list
 %type <Minic.fun_def> fun_def
 %type <Minic.fun_def list> fun_def_list
 
@@ -28,8 +28,10 @@ prog:
 ;
 
 var_decl: 
-| INT x=IDENT {(x,Int)}
-| BOOL x=IDENT {(x,Bool)}
+| INT x=IDENT {(x,Int,None)}
+| BOOL x=IDENT {(x,Bool,None)}
+| INT x=IDENT EGAL n=expr {(x,Int,Some n)}
+| BOOL x=IDENT EGAL b=expr {(x,Bool,Some b)}
 ;
 
 var_decl_list:
