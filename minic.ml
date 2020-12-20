@@ -21,15 +21,17 @@ type typ =
     | Bool
     | Void
 
+
+
 type fun_def = {
     name:   string;
     params: (string * typ) list;
     return: typ;
-    locals: (string * typ) list;
+    locals: (string * typ * expr option) list;
     code:   seq;
   }
 
 type prog = {
-    globals:   (string * typ) list;
+    globals:   (string * typ * expr option) list;
     functions: fun_def list;
   }

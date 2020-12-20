@@ -4,5 +4,4 @@ ocamlopt -o lexer lexer.ml
 menhir -v minicparser.mly
 ocamlc -c minicparser.mli
 ocamllex miniclexer.mll
-ocamlc -c miniclexer.ml
-ocamlopt -o minicc_aux minic.ml minicparser.ml miniclexer.ml minicc.ml
+ocamlopt -o minicc_aux minic.ml minicparser.ml miniclexer.ml type.ml minicc.ml

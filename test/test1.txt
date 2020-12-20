@@ -1,3 +1,4 @@
+<<<<<<< HEAD:test/test1.txt
 int PARAM = 2 * 3;
 bool b;
 int a;
@@ -23,3 +24,5 @@ bool fun(int a, int b, bool c){
 }
 
 int d;
+=======
+>>>>>>> e5e334c97712919fbae82f62031f9932a06e8eb3:test.txt.pre

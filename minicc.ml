@@ -1,5 +1,6 @@
 open Minic
 open Printf
+open Type
 
 let rec print_expr (e:Minic.expr) =
 	match e with
@@ -37,10 +38,11 @@ let print_typ (t: Minic.typ) =
     | Bool -> "bool"
     | Void -> "void"
 ;;    
-let rec print_typ_expr (l:(string * Minic.typ) list) =
+let rec print_typ_expr (l:(string * Minic.typ * Minic.expr option ) list) =
 	match l with
 	| [] -> ""
-	| (n, t)::s -> sprintf "%s %s;\n%s" (print_typ t) n (print_typ_expr s)
+	| (n, t, None)::s -> sprintf "%s %s;\n%s" (print_typ t) n (print_typ_expr s)
+	| (n, t, Some e)::s -> sprintf "%s %s = %s;\n%s" (print_typ t) n (print_expr e) (print_typ_expr s)
 ;;	
 let rec print_params (l:(string * Minic.typ) list) =
 	match l with
@@ -83,28 +85,30 @@ let functions' = [
 	
 
 
-let program = {
+(*let program = {
 	globals = [("PARAM", Int)];
 	functions = [
 		{
 			name = "incr";
 			params = [("n", Int)];
-			return = Int;
+			return = Void;
 			locals = [];
-			code = [Return(Add(Get("n"), Cst(1)))];
+			code = [Set("n",Add(Get("n"), Cst(1)))];
 		};
 		{
 			name = "main";
 			params = [];
 			return = Void;
 			locals = [];
-			code = [Expr(Call("incr", [Get("PARAM")]))];
+			code = [Expr(Call("incr", [Get("PARAM")]))] (*[Set("PARAM",Call("incr",[Get("PARAM")]))]; *)
 		}
 	]
 }
 
-(*let _= printf "%s\n" (print_prog program)
+
+let _= Type.typ_prog program
 ;;*)
+
 
 let _ =
   let fichier = Sys.argv.(1) in
@@ -112,6 +116,8 @@ let _ =
   let lexbuf = Lexing.from_channel c in
   let prog = Minicparser.prog Miniclexer.token lexbuf in
   printf "%s" (print_prog prog);
+  Type.typ_prog prog;
   close_in c;
-  exit 0
+  exit 0 
+
 
