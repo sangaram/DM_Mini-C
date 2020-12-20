@@ -1,13 +1,10 @@
-int PARAM;
+int PARAM = 2 * 3;
 bool b;
 int a;
+int b;
+bool c = false;
+int d;
 &@@&
-
-
-
-
-
-
 
 int fact(int n) {
 if (n < 2) {
@@ -16,11 +13,9 @@ if (n < 2) {
   return n * fact(n + 1);
 }
 }
-
 void main() {
 putchar(fact(PARAM));
 }
-
 bool fun(int a, int b, bool c){
 
 }

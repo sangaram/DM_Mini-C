@@ -1,0 +1,7 @@
+#! /bin/bash
+files=`ls ./test/`
+for file in $files
+do
+	echo "Test: $file"
+	./minicc ./test/$file
+done

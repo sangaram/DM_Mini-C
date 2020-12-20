@@ -1,4 +1,4 @@
-int PARAM;
+int PARAM = 2 * 3;
 bool b;
 int a;
 
@@ -10,10 +10,16 @@ if (n < 2) {
 }
 }
 
+int b;
+
 void main() {
 putchar(fact(PARAM));
 }
 
+bool c = false;
+
 bool fun(int a, int b, bool c){
 
 }
+
+int d;

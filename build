@@ -1,6 +1,6 @@
 #!/bin/bash
-ocamllex minicpreprocessor.mll
-ocamlopt -o minicpreprocessor minicpreprocessor.ml
+ocamllex lexer.mll
+ocamlopt -o lexer lexer.ml
 menhir -v minicparser.mly
 ocamlc -c minicparser.mli
 ocamllex miniclexer.mll
