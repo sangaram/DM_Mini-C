@@ -15,26 +15,14 @@ let ident = alpha (alpha | digit | '_')*
 let typ = ("int" | "bool" | "void")
 let params = (space* typ space+ ident space* (',' space* typ space+ ident space*)*)*
 
-(*rule preprocess = parse
-	| ['\n' '\r'] {print "\n"}
-	| "int" space+ ident space* ';' as s {print "%s" s; preprocess lexbuf}
-	| "bool" space+ ident space* ';' as s {print "%s" s; preprocess lexbuf}
-	| "int" space+ ident space* '(' (_)* ')' space* '{' (_)* '}' as s {fun_def := (!fun_def)^"\n"^s;preprocess lexbuf}
-	| "bool" space+ ident space* '(' (_)* ')' space* '{' (_)* '}' as s {fun_def := (!fun_def)^"\n"^s; preprocess lexbuf}
-	| "void" space+ ident space* '(' (_)* ')' space* '{' (_)* '}' as s {fun_def := (!fun_def)^"\n"^s; preprocess lexbuf}
-	| eof {print "%s" !fun_def}*)
-
 rule preprocess = parse
-	| '\n' {print "\n"; ""}
-	| "int" space+ ident space* ';' as s {print "%s" s; ""}
-	| "bool" space+ ident space* ';' as s {print "%s" s; ""}
-	| "int" space+ ident space* '(' (_)* ')' space* '{' (_)* '}' as s {s}
-	| "bool" space+ ident space* '(' (_)* ')' space* '{' (_)* '}' as s {s}
-	| "void" space+ ident space* '(' (_)* ')' space* '{' (_)* '}' as s {s}
+	| '\n' {""}
+	| "int" space+ ident space* ';' as s {print "%s\n" s; ""}
+	| "bool" space+ ident space* ';' as s {print "%s\n" s; ""}
+	| "int" space+ ident space* '(' [^'(' ')']* ')' space* '{' (_)* '}' as s {s}
+	| "bool" space+ ident space* '(' [^'(' ')']* ')' space* '{' (_)* '}' as s {s}
+	| "void" space+ ident space* '(' [^'(' ')']* ')' space* '{' (_)* '}' as s {s}
 	| eof {print "&@@&"; raise EofException}
-	(*rule preprocess = parse
-	| _ as c {fun_def := (!fun_def)^Char.escaped(c); preprocess lexbuf}
-	| eof {print "%s" !fun_def}*)
 	
 {
 	let lexbuf = Lexing.from_channel cin in
