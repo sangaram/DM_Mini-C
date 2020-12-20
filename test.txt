@@ -1,19 +1,28 @@
-int PARAM;
-bool b;
+int PARAM = 5;
+bool b = true;
 int a;
 
 int fact(int n) {
 if (n < 2) {
   return 1;
 } else {
-  return n * fact(n + 1);
+  return n * fact(n+1);
 }
 }
 
 void main() {
 putchar(fact(PARAM));
+incr(PARAM);
 }
 
 bool fun(int a, int b, bool c){
 
 }
+
+void incr(int n){
+ n = n+1;
+}
+
+
+
+
