@@ -43,8 +43,8 @@ rule token = parse
 	| ')' {next 1;RPAR}
 	| '{' {next 1;LACC}
 	| '}' {next 1;RACC}
-	| '[' {next 1; LHOOK}
-	| ']' {next 1; RHOOK}
+	| '[' {next 1;LHOOK}
+	| ']' {next 1;RHOOK}
 	| "&@@&" {next 4; END}
 	| "while" as s {next (length s);WHILE}
 	| "for" {next 3; FOR}
@@ -53,8 +53,11 @@ rule token = parse
 	| "putchar" as s {next (length s);PUTCHAR}
 	| "return" as s {next (length s);RETURN}
 	| "int" as s {next (length s);INT}
+	| "int[]" {next 5; TAB(Int)}
 	| "void" as s {next (length s);VOID}
+	| "void[]" {next 6; failwith (Printf.sprintf "Invalid type : void[] at %d:%d" !line !col)}
 	| "bool" as s {next (length s);BOOL}
+	| "bool[]" {next 6; TAB(Bool)}
 	| "true" as s {next (length s); CST_B(true)}
 	| "false" as s {next (length s);CST_B(false)}
 	| number as n {next (length n); CST(int_of_string n)}

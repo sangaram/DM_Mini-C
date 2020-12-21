@@ -2,11 +2,12 @@ open Minic
 open Printf
 open Type
 
-let print_typ (t: Minic.typ) =
+let rec print_typ (t: Minic.typ) =
 	match t with
 	| Int -> "int"
     | Bool -> "bool"
     | Void -> "void"
+    | T(t') -> Printf.sprintf "%s[]" (print_typ t')
 ;;  
 
 let rec print_expr (e:Minic.expr) =
@@ -28,6 +29,8 @@ let rec print_expr (e:Minic.expr) =
     | Or(e1, e2) -> sprintf "%s || %s" (print_expr e1) (print_expr e2)
     | Not(e) -> sprintf "!(%s)" (print_expr e)
     | Get s -> sprintf "%s" s
+    | GetT(s, e) -> sprintf "%s[%s]" s (print_expr e)
+    | Tab(e, l) -> sprintf "[%s]{%s}" (print_expr e) (print_expr_list l)
     | Call(s, l) -> sprintf "%s(%s)" s (print_expr_list l)
        
 and print_expr_list (l:Minic.expr list) =
@@ -40,6 +43,7 @@ let rec print_instr (i: Minic.instr) =
 	match i with
 	| Putchar e -> sprintf "putchar(%s);" (print_expr e)
     | Set(s, e) -> sprintf "%s = %s;" s (print_expr e)
+    | SetT(s, e1, e2) -> sprintf "%s[%s] = %s;" s (print_expr e1) (print_expr e2)
     | If(e, s1, s2) -> sprintf "if(%s) {\n%s}\nelse{\n%s\n}\n" (print_expr e) (print_seq s1) (print_seq s2)
     | While(e, s) -> sprintf "while(%s){\n%s\n}" (print_expr e) (print_seq s)
     | For (t, s, e1, e2, i, l) -> sprintf "for(%s %s = %s; %s; %s){\n%s}\n" (print_typ t) s (print_expr e1) (print_expr e2) (print_instr i) (print_seq l)

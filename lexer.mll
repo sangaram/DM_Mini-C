@@ -16,9 +16,13 @@ let space = [' ' '\t']
 rule preprocess = parse
 	| ['\n' '\r'] {preprocess lexbuf}
 	| "int" space+ ident space* ';' as s {print "%s\n" s; preprocess lexbuf}
-	| "bool" space+ ident space* ';' as s {print "%s\n" s; preprocess lexbuf}
 	| "int" space+ ident space* '=' [^ '=' ';']* ';' as s {print "%s\n" s; preprocess lexbuf}
+	| "int" space+ (ident as name) '[' ((ident | number) as taille )']' ';' {print "int[] %s = [%s]{};\n" name taille; preprocess lexbuf}
+	| "int" space+ (ident as name) '[' ((ident | number) as taille) ']' space* '=' ([^ '=' ';']* as value) ';' {print "int[] %s = [%s]%s;\n" name taille value; preprocess lexbuf}
+	| "bool" space+ ident space* ';' as s {print "%s\n" s; preprocess lexbuf}
 	| "bool" space+ ident space* '=' [^ '=' ';']* ';' as s {print "%s\n" s; preprocess lexbuf}
+	| "bool" space+ (ident as name) '[' ((ident | number) as taille) ']' ';' {print "bool[] %s = [%s]{};\n" name taille; preprocess lexbuf}
+	| "bool" space+ (ident as name) '[' ((ident | number) as taille) ']' space* '=' ([^ '=' ';']* as value) ';' {print "bool[] %s = [%s]%s;\n" name taille value; preprocess lexbuf}
 	| ("int" space+ ident as name space* '(' [^ '(' ')']* ')' space* '{') as s
 		{
 			acc := !acc + 1;

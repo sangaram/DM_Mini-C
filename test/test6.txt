@@ -1,0 +1,6 @@
+int tab[4];
+int tab[4] = {1, 2, 3, 4};
+void main(){
+	tab[0] = 5;
+	putchar(tab[1]);
+}

@@ -10,11 +10,12 @@ type fonction = params * typ
 type envVar = (string , typ) Hashtbl.t
 type envFonc = (string , fonction) Hashtbl.t
 
-let print_type (t:Minic.typ) =
+let rec print_type (t:Minic.typ) =
 	match t with
 	| Int -> "Int"
 	| Bool -> "Bool"
 	| Void -> "Void"
+	| T(t') -> Printf.sprintf "%s[]" (print_type t')
 
 
   
@@ -189,7 +190,29 @@ let rec type_expr (e: expr) (env1: envVar) (env2: envFonc): typ = match e with
   | Get(x) -> begin 
 		try Hashtbl.find env1 x with Not_found -> failwith ( Printf.sprintf "La variable %s n'est pas déclarée" x)
 	      end
-
+	| Tab(e, l) -> let t = type_expr e env1 env2 in
+				   if t != Int 
+				   then failwith ("type error: the size must be of an array type int")
+				   else
+				   	 begin
+				   	 	match l with
+				   	 	| [] -> T(Void)
+				   	 	| e'::s -> let t' = type_expr e' env1 env2 in
+				   	 				if not(List.for_all (fun x -> (type_expr x env1 env2) = t') s)
+				   	 				then failwith "The elements of an array must have the same type"
+				   	 				else T(t')
+				   	 end
+				   	 	 
+	| GetT(s, e) -> let t = type_expr e env1 env2 in
+					if t != Int
+					then failwith "Type error : An array index must have type int"
+					else
+						let t' = Hashtbl.find env1 s in
+						begin
+							match t' with
+							| T(a) -> a
+							| _ -> failwith (Printf.sprintf "Type error : %s is not an array" s)
+						end
 
   | Call(f, l) ->  begin
 			   try
@@ -208,7 +231,8 @@ let rec type_expr (e: expr) (env1: envVar) (env2: envFonc): typ = match e with
 				   else failwith "type error"
 			   end
 		           with Not_found -> failwith "Fonction non définie"
- 		 end ;;
+ 		 end
+;;
 
 
 
@@ -222,10 +246,27 @@ let rec type_instr (i: instr) (env1: envVar) (env2: envFonc) (return:typ) : unit
 
     | Set(x,e) -> let  t2 = type_expr e env1 env2 in
 		  if (Hashtbl.mem env1 x) 
-		  then   let t1 = Hashtbl.find env1 x in
-			  if (t1 = t2) then () 
-			  else failwith "type error"
-		  else   Hashtbl.add env1 x t2
+		  then let t1 = Hashtbl.find env1 x in
+		  	begin
+		  		match t1, t2 with
+		  		| T(_), T(Void) -> ()
+		  		| a, b  -> 
+		  			if a != b 
+		  			then failwith (Printf.sprintf "Type error : %s must be affected with an expression of type %s but the expression has type %s" x (print_type t1) (print_type t2))
+		  			else ()
+		  	end
+		  else Hashtbl.add env1 x t2
+		  
+	| SetT(x, e1, e2) -> let t = Hashtbl.find env1 x in
+						begin
+							match t with
+							| T(a) -> let t1 = type_expr e1 env1 env2 in
+										if t1 != Int then failwith "Type error : An array index must have type int"
+										else let t2 = type_expr e2 env1 env2 in
+										if t2 != a then  failwith (Printf.sprintf "Type error : The array elements have type %s but this expression has type %s" (print_type a) (print_type t2))
+										else ()
+							| _ -> failwith (Printf.sprintf "Type error : %s is not an array" x)
+						end
 
 
     | If(e,s1,s2) -> let t = type_expr e env1 env2 in
@@ -265,13 +306,14 @@ let rec type_instr (i: instr) (env1: envVar) (env2: envFonc) (return:typ) : unit
 			| _ -> failwith "type error"
 		end
 
-and  type_seq l env1 env2 return  =
+and type_seq l env1 env2 return =
 	  match l with
 	    | [] -> ()
-	    | e::l -> type_instr e env1 env2 return  ; type_seq l env1 env2 return ;;
+	    | e::s -> type_instr e env1 env2 return  ; type_seq s env1 env2 return;;
 
 
-let type_fun fonct env1 env2  =
+
+let type_fun fonct env1 env2 =
 	if(Hashtbl.mem env2 fonct.name) 
 	then failwith "this function is already defined"
 	else
@@ -294,7 +336,7 @@ let type_fun fonct env1 env2  =
 		 List.iter (fun (s,t) -> Hashtbl.remove env1 s ) (fonct.params);;
 	
 	
-let  rec type_fun_list fonct env1 env2 =
+let rec type_fun_list fonct env1 env2 =
 	match fonct with
 		| [] -> ()
 		| f::fonct -> type_fun f env1 env2 ; type_fun_list fonct env1 env2 ;;
@@ -305,9 +347,12 @@ let typ_prog prog  =
 	let env2 = Hashtbl.create 100 in (* environnement de fonctions *)
 	let rec h = function
 			| [] -> []
-			| (s,t,Some e)::l -> if (type_expr e env1 env2)=t 
-					     then (s,t)::(h l)
-					     else failwith "type error"
+			| (s,t,Some e)::l -> let t' = (type_expr e env1 env2) in
+								begin match t, t' with
+								| T _, T(Void) -> (s,t)::(h l)
+								| a, b -> if a = b then (s,t)::(h l)
+					     				  else failwith (Printf.sprintf "Type error : %s must be affected with an expression of type %s but the expression has type %s" s (print_type t) (print_type t'))
+					     		end
 			| (s,t,None)::l -> (s,t)::(h l)
 
 	in List.iter (fun (s,t) -> Hashtbl.add env1 s t ) (h prog.globals);

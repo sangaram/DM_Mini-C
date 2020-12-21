@@ -2,10 +2,11 @@
   open Minic;;
 %}
 
-%token INT BOOL VOID TAB
+%token INT BOOL VOID
 %token PLUS MOINS FOIS DIV MOD LT LE GT GE AND OR NOT EQ NE
 %token <int> CST
 %token <bool> CST_B
+%token <Minic.typ> TAB
 %token <string> IDENT
 %token RETURN WHILE FOR IF ELSE PUTCHAR 
 %token LPAR RPAR LACC RACC LHOOK RHOOK EGAL COMMA SEMI END EOF
@@ -37,7 +38,6 @@ prog:
 
 var_decl: 
 | t=typ x=IDENT {(x,t,None)}
-| t=typ x=IDENT TAB {}
 | t=typ x=IDENT EGAL n=expr {(x,t,Some n)}
 ;
 
@@ -51,7 +51,7 @@ fun_def:
 ;
 
 fun_def_list:
-| f=fun_def {[f]}
+| {[]}
 | l=fun_def_list f=fun_def { f::l }
 ; 
 
@@ -63,6 +63,7 @@ params:
 simple_instr:
 | PUTCHAR LPAR e=expr RPAR {Putchar(e)}
 | x=IDENT EGAL e=expr {Set(x,e)}
+| x=IDENT LHOOK e1=expr RHOOK EGAL e2=expr {SetT(x, e1, e2)}
 | RETURN  e=expr {Return(e)}
 | f=IDENT LPAR s=separated_list(COMMA,expr) RPAR {Expr(Call(f,s))}
 ;
@@ -86,6 +87,8 @@ expr:
 | n=CST { Cst(n) }
 | b=CST_B { Cst_b(b) }
 | x=IDENT { Get(x) }
+| x=IDENT LHOOK e=expr RHOOK {GetT(x, e)}
+| LHOOK e=expr RHOOK LACC l=separated_list(COMMA, expr) RACC {Tab(e, l)}
 | e=expr PLUS f=expr { Add(e,f) }
 | e=expr MOINS f=expr %prec MOINS_UNAIRE { Sub(e,f) }
 | e=expr FOIS f=expr { Mul(e,f) }
@@ -108,4 +111,5 @@ typ:
 | INT {Int}
 | BOOL {Bool}
 | VOID {Void}
+| t=TAB {T(t)}
 %%

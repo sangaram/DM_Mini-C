@@ -2,7 +2,7 @@ type typ =
     | Int
     | Bool
     | Void
-    | Tab of typ
+    | T of typ
 
 type expr =
     | Cst  of int
@@ -22,10 +22,13 @@ type expr =
     | Ne of expr * expr
     | Not of expr
     | Get  of string
+    | Tab of expr * (expr list)
+    | GetT of string * expr
     | Call of string * expr list
 type instr =
     | Putchar of expr
     | Set     of string * expr
+    | SetT	  of string * expr * expr
     | If      of expr * seq * seq
     | While   of expr * seq
     | For of typ * string * expr * expr * instr * seq

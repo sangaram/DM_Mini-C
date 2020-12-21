@@ -4,7 +4,7 @@
 type token = 
   | WHILE
   | VOID
-  | TAB
+  | TAB of (Minic.typ)
   | SEMI
   | RPAR
   | RHOOK
