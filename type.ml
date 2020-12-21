@@ -10,6 +10,13 @@ type fonction = params * typ
 type envVar = (string , typ) Hashtbl.t
 type envFonc = (string , fonction) Hashtbl.t
 
+let print_type (t:Minic.typ) =
+	match t with
+	| Int -> "Int"
+	| Bool -> "Bool"
+	| Void -> "Void"
+
+
   
 
 let rec type_expr (e: expr) (env1: envVar) (env2: envFonc): typ = match e with
@@ -29,14 +36,83 @@ let rec type_expr (e: expr) (env1: envVar) (env2: envFonc): typ = match e with
 	    then Bool
 	    else failwith "type error"    
 	end
+	
+	| Le(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Int && t2 = Int
+	    then Bool
+	    else failwith "type error"    
+	end
+	
+	| Gt(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Int && t2 = Int
+	    then Bool
+	    else failwith "type error"    
+	end
+	
+	| Ge(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Int && t2 = Int
+	    then Bool
+	    else failwith "type error"    
+	end
+	
+	| And(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Bool && t2 = Bool
+	    then Bool
+	    else failwith "type error"    
+	end
+	
+	| Or(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Bool && t2 = Bool
+	    then Bool
+	    else failwith "type error"    
+	end
+	
+	| Not(e) ->
+	begin
+	    let t = type_expr e env1 env2 in
+	    if t = Bool
+	    then Bool
+	    else failwith "type error"    
+	end
+	
+	| Eq(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = t2
+	    then Bool
+	    else failwith "type error"    
+	end
+	
+	| Ne(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = t2
+	    then Bool
+	    else failwith "type error"    
+	end
 
 (*
   -------------
    Γ ⊢ n : int
 *)
-
   | Cst _ -> Int
-
 
 (*
   -------------
@@ -60,6 +136,15 @@ let rec type_expr (e: expr) (env1: envVar) (env2: envFonc): typ = match e with
 	    then Int
 	    else failwith "type error"
 	end
+	
+	| Sub(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Int && t2 = Int
+	    then Int
+	    else failwith "type error"
+	end
 (*
    Γ ⊢ e₁ : int     Γ ⊢ e₂ : int
   -------------------------------
@@ -76,15 +161,34 @@ let rec type_expr (e: expr) (env1: envVar) (env2: envFonc): typ = match e with
 	    else failwith "type error"
 	end
 
+	| Div(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Int && t2 = Int
+	    then Int
+	    else failwith "type error"
+	end
+	
+	| Mod(e1, e2) ->
+	begin
+	    let t1 = type_expr e1 env1 env2 in
+	    let t2 = type_expr e2 env1 env2 in
+	    if t1 = Int && t2 = Int
+	    then Int
+	    else failwith "type error"
+	end
+	
+	
+
+
 (*
   --------------
    Γ ⊢ x : Γ(x)
 *)    
   | Get(x) -> begin 
-		try Hashtbl.find env1 x with Not_found -> failwith "cette variable n'est pas declarée!!!"
+		try Hashtbl.find env1 x with Not_found -> failwith ( Printf.sprintf "La variable %s n'est pas déclarée" x)
 	      end
-
-
 
 
   | Call(f, l) ->  begin
@@ -131,6 +235,20 @@ let rec type_instr (i: instr) (env1: envVar) (env2: envFonc) (return:typ) : unit
     | While(e,s) -> let t = type_expr e env1 env2 in
 		    if(t != Bool) then failwith "type error"
 		    else type_seq s env1 env2 return 
+	
+	| For (t, s, e1, e2, i, l) -> 
+			let t1 = type_expr e1 env1 env2 and  
+			t2 = type_expr e2 env1 env2 in
+			if t1 != t 
+			then failwith "type error"
+			else
+				if t2 != Bool
+				then failwith "type error"
+				else 
+					Hashtbl.add env1 s t;
+					type_instr i env1 env2 return;
+					type_seq l env1 env2 return;
+					Hashtbl.remove env1 s		
 
     | Return(e) -> let t = type_expr e env1 env2 in
 		   begin
@@ -167,12 +285,13 @@ let type_fun fonct env1 env2  =
 			| (s,t,None)::l -> (s,t)::(h l)
 
 		 in let f = h fonct.locals in
-	         List.iter (fun (s,t) -> Hashtbl.add env1 s t ) f;
+		 List.iter (fun (s,t) -> Hashtbl.add env1 s t) f;
+	     (*List.iter (fun (s,t) -> Printf.printf "(%s, %s)" s (print_type t)) f;;*)
+	     (*Hashtbl.iter (fun k v -> Printf.printf "(%s, %s)" k (print_type v)) env1;
+	     Printf.printf "\n";*)
 		 type_seq fonct.code env1 env2 fonct.return ;
 		 List.iter (fun (s,t) -> Hashtbl.remove env1 s ) f;
-		 List.iter (fun (s,t) -> Hashtbl.remove env1 s ) (fonct.params)
-;; 
-
+		 List.iter (fun (s,t) -> Hashtbl.remove env1 s ) (fonct.params);;
 	
 	
 let  rec type_fun_list fonct env1 env2 =

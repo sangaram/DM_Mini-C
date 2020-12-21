@@ -1,28 +1,13 @@
-<<<<<<< HEAD:test/test1.txt
-int PARAM = 2 * 3;
-bool b;
-int a;
-
-int fact(int n) {
-if (n < 2) {
-  return 1;
-} else {
-  return n * fact(n + 1);
-}
-}
-
-int b;
-
 void main() {
-putchar(fact(PARAM));
+int x = 1 % 1;
+int y = 1 / 1;
+int z = 1 - 1;
+bool a1 = x == y;
+bool a2 = x != y;
+bool a3 = x <= y;
+bool a4 = x > y;
+bool a5 = x >= y;
+bool a6 = true && false;
+bool a7 = true || false;
+bool a8 = !true;
 }
-
-bool c = false;
-
-bool fun(int a, int b, bool c){
-
-}
-
-int d;
-=======
->>>>>>> e5e334c97712919fbae82f62031f9932a06e8eb3:test.txt.pre

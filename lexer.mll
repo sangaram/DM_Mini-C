@@ -45,6 +45,7 @@ and infun = parse
 	| '}' {acc := !acc - 1; functions := (!functions)^"}"; if !acc = 0 then preprocess lexbuf else infun lexbuf }
 	| '{' {acc := !acc + 1; functions := (!functions)^"{"; infun lexbuf}
 	| '\n' {functions := !functions^"\n"; infun lexbuf}
+	| '\t' {functions := !functions^"\t"; infun lexbuf}
 	| _ as c {functions := !functions^Char.escaped(c); infun lexbuf}
 	| eof {failwith (Printf.sprintf "Program ended while defining the function : %s" !current)}
 	

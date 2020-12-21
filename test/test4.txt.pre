@@ -1,0 +1,23 @@
+&@@&
+
+void main(){
+	int i = 0;
+	int j = 2;
+	int k = 5;
+	if(i <= j){
+		if(k <= j){
+			putchar(j);
+		}
+		else{
+			putchar(k);
+		}
+	}
+	else{
+		if(k <= i){
+			putchar(i);
+		}
+		else{
+			putchar(k);
+		}
+	}
+}

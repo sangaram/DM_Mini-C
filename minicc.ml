@@ -2,13 +2,31 @@ open Minic
 open Printf
 open Type
 
+let print_typ (t: Minic.typ) =
+	match t with
+	| Int -> "int"
+    | Bool -> "bool"
+    | Void -> "void"
+;;  
+
 let rec print_expr (e:Minic.expr) =
 	match e with
 	| Cst n -> sprintf "%d" n
     | Cst_b b -> sprintf "%b" b
     | Add(e1, e2) -> sprintf "%s + %s" (print_expr e1) (print_expr e2)
+	| Sub(e1, e2) -> sprintf "%s - %s" (print_expr e1) (print_expr e2)
     | Mul(e1, e2) -> sprintf "%s * %s" (print_expr e1) (print_expr e2)
+    | Div(e1, e2) -> sprintf "%s / %s" (print_expr e1) (print_expr e2)
+    | Mod(e1, e2) -> sprintf "%s mod %s" (print_expr e1) (print_expr e2)
     | Lt(e1, e2) -> sprintf "%s < %s" (print_expr e1) (print_expr e2)
+    | Le(e1, e2) -> sprintf "%s <= %s" (print_expr e1) (print_expr e2)
+    | Gt(e1, e2) -> sprintf "%s > %s" (print_expr e1) (print_expr e2)
+    | Ge(e1, e2) -> sprintf "%s >= %s" (print_expr e1) (print_expr e2)
+    | Eq(e1, e2) -> sprintf "%s == %s" (print_expr e1) (print_expr e2)
+    | Ne(e1, e2) -> sprintf "%s != %s" (print_expr e1) (print_expr e2)
+    | And(e1, e2) -> sprintf "%s && %s" (print_expr e1) (print_expr e2)
+    | Or(e1, e2) -> sprintf "%s || %s" (print_expr e1) (print_expr e2)
+    | Not(e) -> sprintf "!(%s)" (print_expr e)
     | Get s -> sprintf "%s" s
     | Call(s, l) -> sprintf "%s(%s)" s (print_expr_list l)
        
@@ -20,24 +38,20 @@ and print_expr_list (l:Minic.expr list) =
 ;;	
 let rec print_instr (i: Minic.instr) = 
 	match i with
-	| Putchar e -> sprintf "putchar(%s)" (print_expr e)
-    | Set(s, e) -> sprintf "%s = %s" s (print_expr e)
+	| Putchar e -> sprintf "putchar(%s);" (print_expr e)
+    | Set(s, e) -> sprintf "%s = %s;" s (print_expr e)
     | If(e, s1, s2) -> sprintf "if(%s) {\n%s}\nelse{\n%s\n}\n" (print_expr e) (print_seq s1) (print_seq s2)
     | While(e, s) -> sprintf "while(%s){\n%s\n}" (print_expr e) (print_seq s)
-    | Return e -> sprintf "return %s" (print_expr e)
+    | For (t, s, e1, e2, i, l) -> sprintf "for(%s %s = %s; %s; %s){\n%s}\n" (print_typ t) s (print_expr e1) (print_expr e2) (print_instr i) (print_seq l)
+    | Return e -> sprintf "return %s;" (print_expr e)
     | Expr e -> print_expr e
     
 and print_seq (l:Minic.seq) = 
 	match l with
 	| [] -> ""
-	| e::s -> (print_instr e)^";\n"^(print_seq s)
+	| e::s -> (print_instr e)^"\n"^(print_seq s)
 ;;	
-let print_typ (t: Minic.typ) =
-	match t with
-	| Int -> "int"
-    | Bool -> "bool"
-    | Void -> "void"
-;;    
+  
 let rec print_typ_expr (l:(string * Minic.typ * Minic.expr option ) list) =
 	match l with
 	| [] -> ""

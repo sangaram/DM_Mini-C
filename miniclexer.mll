@@ -14,25 +14,40 @@
 }
 
 
+
 let ident = ['A'-'Z' 'a'-'z'] ['A'-'Z' 'a'-'z' '_' '0'-'9' ]*
-let number = ['0'-'9']+
+let number = ['-']? ['0'-'9']+
 let space = [' ' '\t']+
 
 rule token = parse
 	| ['\n' '\r']+ as s {newline (length s); token lexbuf}
 	| space as s {next (length s); token lexbuf}
 	| '+' {next 1; PLUS}
+	| '-' {next 1; MOINS}
 	| '*' {next 1; FOIS}
+	| '/' {next 1; DIV}
+	| '%' {next 1; MOD}
 	| '<' {next 1; LT}
+	| "<=" {next 2; LE}
+	| '>' {next 1; GT}
+	| ">=" {next 2; GE}
 	| ',' {next 1; COMMA}
 	| ';' {next 1;SEMI}
 	| '=' {next 1;EGAL}
+	| "==" {next 2; EQ}
+	| "!=" {next 2; NE}
+	| '!' {next 1; NOT}
+	| "&&" {next 2; AND}
+	| "||" {next 2; OR}
 	| '(' {next 1;LPAR}
 	| ')' {next 1;RPAR}
 	| '{' {next 1;LACC}
 	| '}' {next 1;RACC}
+	| '[' {next 1; LHOOK}
+	| ']' {next 1; RHOOK}
 	| "&@@&" {next 4; END}
 	| "while" as s {next (length s);WHILE}
+	| "for" {next 3; FOR}
 	| "if" as s {next (length s);IF}
 	| "else" as s {next (length s);ELSE}
 	| "putchar" as s {next (length s);PUTCHAR}
