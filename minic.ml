@@ -1,5 +1,5 @@
 type typ =
-    | Int
+    | Int 
     | Bool
     | Void
     | T of typ

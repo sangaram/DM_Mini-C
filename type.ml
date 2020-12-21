@@ -218,6 +218,7 @@ let rec type_expr (e: expr) (env1: envVar) (env2: envFonc): typ = match e with
 			   try
 	   		   begin
 				   let param, return = Hashtbl.find env2 f in
+				  
 				   let rec matche l param env1 env2 =
 					begin
 					       match l, param with
